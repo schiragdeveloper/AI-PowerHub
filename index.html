@@ -13,7 +13,8 @@
     <!-- =================================================================== -->
     
     <style>
-        /* CSS Reset and Global Styles */
+        /* CSS Reset and Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         :root {
             --primary-color: #3B82F6;
             --primary-color-hover: #2563EB;
@@ -25,7 +26,7 @@
             --card-bg-light: rgba(255, 255, 255, 0.7);
             --border-color-light: #cbd5e1;
             --shadow-color-light: rgba(59, 130, 246, 0.15);
-             --aurora-light-1: #a7c5eb; --aurora-light-2: #d8b4fe; --aurora-light-3: #fde68a;
+            --aurora-light-1: #a7c5eb; --aurora-light-2: #d8b4fe; --aurora-light-3: #fde68a;
 
             /* Dark Theme */
             --bg-color-dark: #020617;
@@ -35,7 +36,6 @@
             --shadow-color-dark: rgba(59, 130, 246, 0.1);
             --aurora-dark-1: #1e3a8a; --aurora-dark-2: #5b21b6; --aurora-dark-3: #b45309;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -75,7 +75,7 @@
 
         /* Header & Theme Toggle */
         .site-header {
-            padding: 1rem 5%; background-color: rgba(255, 255, 255, 0.01); backdrop-filter: blur(12px);
+            padding: 1rem 5%; background-color: rgba(2, 6, 23, 0.5); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
         }
@@ -93,7 +93,7 @@
         [data-theme="light"] #home h1 { background: linear-gradient(90deg, #1e293b, #475569); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         #home p { max-width: 700px; margin: 1rem auto; font-size: 1.1rem; }
         .search-container { margin: 2rem auto 0; display: flex; justify-content: center; max-width: 600px; }
-        #search-bar { width: 100%; padding: 1rem 1._5rem; font-size: 1rem; border-radius: 50px; border: 1px solid var(--border-color); background-color: var(--card-bg); color: var(--text-color); transition: all 0.3s; backdrop-filter: blur(5px); }
+        #search-bar { width: 100%; padding: 1rem 1.5rem; font-size: 1rem; border-radius: 50px; border: 1px solid var(--border-color); background-color: var(--card-bg); color: var(--text-color); transition: all 0.3s; backdrop-filter: blur(5px); }
         #search-bar:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px var(--shadow-color); }
 
         /* Section Styling */
@@ -134,6 +134,7 @@
 
         /* Contact & Footer */
         .contact-container { max-width: 800px; margin: 0 auto; padding: 3rem; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border-color); }
+        #contact-section .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; align-items: start; }
         .site-footer { padding: 4rem 5% 2rem; text-align: center; }
         
         @media (max-width: 768px) { h1 {font-size: 2.5rem;} h2 {font-size: 2rem;} }
@@ -189,20 +190,22 @@
         <section id="contact-section" class="content-section">
             <div class="contact-container">
                 <h2>Contact Me</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div class="grid-container">
                     <div id="quick-contact">
                         <h3>Quick Contact</h3>
                         <p>Send a message directly to my WhatsApp.</p>
                         <div class="form-group">
                             <label for="wa-number">Your Phone Number (Optional)</label>
-                            <input type="tel" id="wa-number" placeholder="+91 XXXXX XXXXX">
+                            <input type="tel" id="wa-number" placeholder="+91 YourNumber">
                         </div>
-                        <button class="btn" id="send-whatsapp-btn">Send on WhatsApp</button>
+                        <button class="btn" id="send-whatsapp-btn" style="width:100%;">Send on WhatsApp</button>
                     </div>
-                    <div id="get-in-touch">
+                    <div id="get-in-touch" class="form-group">
                         <h3>Get in Touch</h3>
-                        <p>For suggestions or queries, use the form below or email me directly at <a href="mailto:aichiragbusinessid@gmail.com" style="color:var(--primary-color);">aichiragbusinessid@gmail.com</a>.</p>
-                        <!-- Demo form -->
+                        <p>For suggestions or queries, email me directly at <a href="mailto:aichiragbusinessid@gmail.com" style="color:var(--primary-color);">aichiragbusinessid@gmail.com</a>.</p>
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required style="margin-top: 1rem;">
+                        <button class="btn" style="margin-top: 1rem; width:100%;">Send Email (Demo)</button>
                     </div>
                 </div>
             </div>
@@ -218,41 +221,43 @@
     // --- SCRIPT START --- //
     document.addEventListener('DOMContentLoaded', () => {
 
+        // --- SINGLE SOURCE OF TRUTH FOR ALL TOOLS ---
         const TOOL_DATA = {
             ai: [
+                // Text
                 { id: "chatGPT", name: "ChatGPT", url: "https://chat.openai.com/", category: "Text", description: "The original AI chatbot that can answer questions, write, and code." },
-                { id: "leonardoAI", name: "Leonardo.Ai", url: "https://leonardo.ai/", category: "Image", description: "Generate stunning game assets and illustrations with a generous free tier." },
-                { id: "sunoAI", name: "Suno AI", url: "https://suno.com/", category: "Audio", description: "Create original songs with AI. Just provide a text prompt to generate music." },
-                { id: "githubCopilot", name: "GitHub Copilot", url: "https://github.com/features/copilot", category: "Code", description: "Your AI pair programmer that provides code suggestions in your editor." },
-                { id: "capcut", name: "CapCut", url: "https://www.capcut.com/", category: "Video", description: "Free all-in-one video editor with AI features like auto captions." },
-                { id: "removeBG", name: "Remove.bg", url: "https://www.remove.bg/", category: "Image", description: "Remove image backgrounds 100% automatically and for free." },
-                { id: "adobePodcast", name: "Adobe Podcast", url: "https://podcast.adobe.com/enhance", category: "Audio", description: "AI-powered audio cleaning that removes noise from voice recordings." },
                 { id: "perplexityAI", name: "Perplexity AI", url: "https://www.perplexity.ai/", category: "Text", description: "An AI search engine that provides direct, sourced answers to questions." },
-                { id: "stableDiffusion", name: "Stable Diffusion", url: "https://stablediffusionweb.com/", category: "Image", description: "A free and fast image generator powered by Stable Diffusion models." },
                 { id: "claudeAI", name: "Claude.ai", url: "https://claude.ai/", category: "Text", description: "A next-generation AI assistant from Anthropic, known for safety and context." },
-                { id: "runwayML", name: "RunwayML", url: "https://runwayml.com/", category: "Video", description: "Advanced AI magic tools for video, including text-to-video and inpainting." },
-                { id: "codeium", name: "Codeium", url: "https://codeium.com/", category: "Code", description: "A free AI-powered toolkit for developers. A great alternative to Copilot." },
-                { id: "elevenLabs", name: "ElevenLabs", url: "https://elevenlabs.io/", category: "Audio", description: "Generative AI for text-to-speech and voice cloning with realistic voices." },
-                { id: "gammaApp", name: "Gamma", url: "https://gamma.app/", category: "Productivity", description: "Create beautiful presentations and documents from a text prompt." },
                 { id: "quillbot", name: "QuillBot", url: "https://quillbot.com/", category: "Text", description: "AI-powered paraphrasing tool, grammar checker, and summarizer." },
-                { id: "clipdrop", name: "Clipdrop", url: "https://clipdrop.co/", category: "Image", description: "An ecosystem of AI apps, including image cleanup and upscaling." },
-                { id: "veedIO", name: "Veed.io", url: "https://www.veed.io/", category: "Video", description: "Online video editing suite with AI tools for subtitling and transcription." },
-                { id: "phind", name: "Phind", url: "https://www.phind.com/", category: "Code", description: "An AI search engine specifically for developers with code examples." },
+                { id: "copyai", name: "Copy.ai", url: "https://www.copy.ai/", category: "Text", description: "Generate marketing copy and content like headlines and social media posts." },
+                // Image
+                { id: "leonardoAI", name: "Leonardo.Ai", url: "https://leonardo.ai/", category: "Image", description: "Generate stunning game assets and illustrations with a generous free tier." },
+                { id: "midjourney", name: "Midjourney", url: "https://www.midjourney.com/", category: "Image", description: "A top-tier AI image generator known for its artistic and photorealistic styles." },
+                { id: "stableDiffusion", name: "Stable Diffusion", url: "https://stablediffusionweb.com/", category: "Image", description: "A free and fast image generator powered by Stable Diffusion models." },
+                { id: "removeBG", name: "Remove.bg", url: "https://www.remove.bg/", category: "Image", description: "Remove image backgrounds 100% automatically and for free." },
                 { id: "krea", name: "Krea AI", url: "https://www.krea.ai/", category: "Image", description: "Real-time AI image generation and enhancement for designers." },
                 { id: "ideogram", name: "Ideogram", url: "https://ideogram.ai/", category: "Image", description: "AI image generator known for its ability to render text accurately." },
-                { id: "huggingface", name: "Hugging Face", url: "https://huggingface.co/", category: "Platform", description: "The home of open-source AI. Access models, datasets, and tools." },
-                { id: "notion", name: "Notion AI", url: "https://www.notion.so/product/ai", category: "Productivity", description: "AI features integrated into Notion to help you write and brainstorm." }
+                { id: "clipdrop", name: "Clipdrop", url: "https://clipdrop.co/", category: "Image", description: "An ecosystem of AI apps, including image cleanup and upscaling." },
+                // Audio
+                { id: "sunoAI", name: "Suno AI", url: "https://suno.com/", category: "Audio", description: "Create original songs with AI. Just provide a text prompt to generate music." },
+                { id: "elevenLabs", name: "ElevenLabs", url: "https://elevenlabs.io/", category: "Audio", description: "Generative AI for text-to-speech and voice cloning with realistic voices." },
+                { id: "adobePodcast", name: "Adobe Podcast Enhance", url: "https://podcast.adobe.com/enhance", category: "Audio", description: "AI-powered audio cleaning that removes noise from voice recordings." },
+                { id: "lalalai", name: "LALAL.AI", url: "https://www.lalal.ai/", category: "Audio", description: "High-quality stem splitter to extract vocals and instruments from any audio." },
+                // Video
+                { id: "capcut", name: "CapCut", url: "https://www.capcut.com/", category: "Video", description: "Free all-in-one video editor with AI features like auto captions." },
+                { id: "runwayML", name: "RunwayML", url: "https://runwayml.com/", category: "Video", description: "Advanced AI magic tools for video, including text-to-video and inpainting." },
+                { id: "veedIO", name: "Veed.io", url: "https://www.veed.io/", category: "Video", description: "Online video editing suite with AI tools for subtitling and transcription." },
+                { id: "pika", name: "Pika", url: "https://pika.art/", category: "Video", description: "Generate and edit videos with AI from text, images, or other videos." },
+                // Code
+                { id: "githubCopilot", name: "GitHub Copilot", url: "https://github.com/features/copilot", category: "Code", description: "Your AI pair programmer that provides code suggestions in your editor." },
+                { id: "codeium", name: "Codeium", url: "https://codeium.com/", category: "Code", description: "A free AI-powered toolkit for developers. A great alternative to Copilot." },
+                { id: "phind", name: "Phind", url: "https://www.phind.com/", category: "Code", description: "An AI search engine specifically for developers with code examples." },
+                { id: "replit", name: "Replit", url: "https://replit.com/ai", category: "Code", description: "An online IDE with AI features for coding, deploying, and hosting apps." },
+                // Productivity & Platform
+                { id: "gammaApp", name: "Gamma", url: "https://gamma.app/", category: "Productivity", description: "Create beautiful presentations and documents from a text prompt." },
+                { id: "notion", name: "Notion AI", url: "https://www.notion.so/product/ai", category: "Productivity", description: "AI features integrated into Notion to help you write and brainstorm." },
+                { id: "huggingface", name: "Hugging Face", url: "https://huggingface.co/", category: "Platform", description: "The home of open-source AI. Access models, datasets, and tools." }
             ],
             utility: [
                 { id: "ageCalculator", name: "Age Calculator", type: "interactive", category: "Calculator", description: "Calculate your exact age in years, months, and days." },
-                { id: "wordCounter", name: "Word Counter", type: "interactive", category: "Text", description: "Count words and characters in a piece of text. Great for writers." },
-                { id: "passwordGenerator", name: "Password Generator", type: "interactive", category: "Security", description: "Create strong, secure, and random passwords for your accounts." },
-                { id: "caseConverter", name: "Case Converter", type: "interactive", category: "Text", description: "Convert text between UPPERCASE, lowercase, and Title Case." },
-                { id: "emiCalculator", name: "Loan EMI Calculator", type: "interactive", category: "Finance", description: "Calculate your Equated Monthly Instalment (EMI) for loans." },
-                { id: "textToSpeech", name: "Text to Speech", type: "interactive", category: "Audio", description: "Convert text into natural-sounding speech right in your browser." },
-                { id: "qrCodeGenerator", name: "QR Code Generator", url: "https://www.the-qrcode-generator.com/", category: "Utility", description: "Create QR codes for URLs and text. Links to a trusted external tool." },
-                { id: "imageCompressor", name: "Image Compressor", url: "https://squoosh.app/", category: "Image", description: "Compress and optimize your images with various formats. External link." },
-            ]
-        };
-
-        const DAILY_ESSENTIAL_IDS = ["chatGPT", "leonardoAI", "ageCalculator", "emiCalculator", "sunoAI", "removeBG", "passwordGenerator", 
+        
